@@ -6,7 +6,6 @@ Parameters:
     Description: parameters of read only analyst user
     Type: String
 
-
 Resources:
   ParquetBucket:
     Type: AWS::S3::Bucket
@@ -85,4 +84,3 @@ Resources:
       FunctionName: !GetAtt LoadSalesFunction.Arn
       Principal: events.amazonaws.com
       SourceArn: !GetAtt LoadSalesRule.Arn
-
