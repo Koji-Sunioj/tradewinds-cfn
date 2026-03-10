@@ -1,0 +1,36 @@
+name: initiate-tradewinds
+
+on:
+  workflow_dispatch:
+  repository_dispatch:
+    types: [updated-function-zip]
+  push:
+    branches:
+      - main
+
+env:
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  TRADEWINDS_STACK: ${{ secrets.TRADEWINDS_STACK }}
+  DB_ADMIN: ${{ secrets.DB_ADMIN }}
+  DB_ANALYST: ${{ secrets.DB_ANALYST }}
+  FUNCTION_BUCKET: ${{ secrets.FUNCTION_BUCKET }}
+
+jobs:
+  deploy-rest-api:
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: actions/checkout@v6
+      - run: |
+          VERSIONS=$(aws s3api list-object-versions --bucket $FUNCTION_BUCKET --region eu-north-1 \
+            --prefix tradewind_functions.zip --query "Versions")
+
+          VERSION_ID=$(echo $VERSIONS | jq -r '.[] | select(.IsLatest == true).VersionId')
+
+          aws cloudformation deploy --stack-name $TRADEWINDS_STACK --template-file w3-tradewinds.yaml \
+            --capabilities CAPABILITY_IAM --region eu-north-1 \
+            --parameter-overrides \
+            FunctionVersion=$VERSION_ID \
+            FunctionBucket=$FUNCTION_BUCKET \
+            DBAdmin=$DB_ADMIN \
+            DBAnalyst=$DB_ANALYST 

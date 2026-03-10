@@ -5,6 +5,12 @@ Parameters:
   DBAnalyst:
     Description: parameters of read only analyst user
     Type: String
+  FunctionVersion:
+    Description: version of function zip in s3
+    Type: String
+  FunctionBucket:
+    Description: bucket name of where functions zip lives
+    Type: String
 
 Resources:
   ParquetBucket:
@@ -57,8 +63,9 @@ Resources:
         Variables:
           DB_ADMIN: !Ref DBAdmin
       Code:
-        S3Bucket: black-metal-666
-        S3Key: tradewind_functions.zip 
+        S3Bucket: !Ref FunctionBucket 
+        S3Key: tradewind_functions.zip
+        S3ObjectVersion: !Ref FunctionVersion  
       Runtime: python3.10
       Timeout: 60
       Layers:
