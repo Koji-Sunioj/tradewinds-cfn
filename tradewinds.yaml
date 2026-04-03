@@ -80,10 +80,10 @@ Resources:
       ExecutionClass: FLEX 
       GlueVersion: "4.0"
       MaxRetries: 0 
-      NumberOfWorkers: 1
+      NumberOfWorkers: 2 
       Role: !GetAtt ETLRole.Arn
       #Timeout: Integer
-      WorkerType: Standard 
+      WorkerType: G.1X
   LoadSalesFunction:
     Type: AWS::Lambda::Function
     Properties:
