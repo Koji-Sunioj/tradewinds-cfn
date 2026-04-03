@@ -13,7 +13,7 @@ Parameters:
     Type: String
 
 Resources:
-  ParquetBucket:
+  ETLBucket:
     Type: AWS::S3::Bucket
     Properties:
       BucketName: !Sub "${AWS::StackName}-${AWS::Region}"
@@ -25,7 +25,7 @@ Resources:
       Content:
         S3Bucket: black-metal-666
         S3Key: lambda_layer.zip
-  LambdaRole:
+  LoadSalesRole:
     Type: AWS::IAM::Role
     Properties:
       AssumeRolePolicyDocument:
@@ -37,20 +37,34 @@ Resources:
                 - lambda.amazonaws.com
             Action:
               - "sts:AssumeRole"
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+  ETLRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Principal:
+              Service:
+                - glue.amazonaws.com
+            Action:
+              - "sts:AssumeRole"
       Policies:
-        - PolicyName: parquet-bucket-policy 
+        - PolicyName: etl-policy
           PolicyDocument:
             Version: "2012-10-17"
             Statement:
               - Effect: "Allow"
                 Action: "s3:GetObject"
-                Resource: !GetAtt ParquetBucket.Arn
+                Resource: !GetAtt ETLBucket.Arn
               - Effect: "Allow"
-                Action: "s3:GetObject"
-                Resource: !GetAtt ParquetBucket.Arn
+                Action: "s3:PutObject"
+                Resource: !GetAtt ETLBucket.Arn
               - Effect: "Allow"
                 Action: "s3:ListBucket"
-                Resource: !GetAtt ParquetBucket.Arn
+                Resource: !GetAtt ETLBucket.Arn
               - Effect: "Allow"
                 Action: "logs:*"
                 Resource: "arn:aws:logs:*:*:*"
@@ -58,14 +72,14 @@ Resources:
     Type: AWS::Lambda::Function
     Properties:
       Handler: load_sales.handler
-      Role: !GetAtt LambdaRole.Arn
+      Role: !GetAtt LoadSalesRole.Arn
       Environment:
         Variables:
           DB_ADMIN: !Ref DBAdmin
       Code:
-        S3Bucket: !Ref FunctionBucket 
+        S3Bucket: !Ref FunctionBucket
         S3Key: tradewind_functions.zip
-        S3ObjectVersion: !Ref FunctionVersion  
+        S3ObjectVersion: !Ref FunctionVersion
       Runtime: python3.10
       Timeout: 60
       Layers:
