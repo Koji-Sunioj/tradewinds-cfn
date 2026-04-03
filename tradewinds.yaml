@@ -75,8 +75,8 @@ Resources:
         Name: glueetl
         ScriptLocation: !Sub "s3://${FunctionBucket}/etl.py"
       DefaultArguments: 
-        "--db-analyst": !Ref DBAnalyst
-        "--etl-bucket": !Ref ETLBucket
+        "--db_analyst": !Ref DBAnalyst
+        "--etl_bucket": !Ref ETLBucket
       ExecutionClass: FLEX 
       GlueVersion: "4.0"
       MaxRetries: 0 
