@@ -39,35 +39,35 @@ Resources:
               - "sts:AssumeRole"
       ManagedPolicyArns:
         - "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
-  ETLRole:
-    Type: AWS::IAM::Role
-    Properties:
-      AssumeRolePolicyDocument:
-        Version: "2012-10-17"
-        Statement:
-          - Effect: "Allow"
-            Principal:
-              Service:
-                - glue.amazonaws.com
-            Action:
-              - "sts:AssumeRole"
-      Policies:
-        - PolicyName: etl-policy
-          PolicyDocument:
-            Version: "2012-10-17"
-            Statement:
-              - Effect: "Allow"
-                Action: "s3:GetObject"
-                Resource: !GetAtt ETLBucket.Arn
-              - Effect: "Allow"
-                Action: "s3:PutObject"
-                Resource: !GetAtt ETLBucket.Arn
-              - Effect: "Allow"
-                Action: "s3:ListBucket"
-                Resource: !GetAtt ETLBucket.Arn
-              - Effect: "Allow"
-                Action: "logs:*"
-                Resource: "arn:aws:logs:*:*:*"
+  #ETLRole:
+  #  Type: AWS::IAM::Role
+  #  Properties:
+  #    AssumeRolePolicyDocument:
+  #      Version: "2012-10-17"
+  #      Statement:
+  #        - Effect: "Allow"
+  #          Principal:
+  #            Service:
+  #              - glue.amazonaws.com
+  #          Action:
+  #            - "sts:AssumeRole"
+  #    Policies:
+  #      - PolicyName: etl-policy
+  #        PolicyDocument:
+  #          Version: "2012-10-17"
+  #          Statement:
+  #            - Effect: "Allow"
+  #              Action: "s3:GetObject"
+  #              Resource: !GetAtt ETLBucket.Arn
+  #            - Effect: "Allow"
+  #              Action: "s3:PutObject"
+  #              Resource: !GetAtt ETLBucket.Arn
+  #            - Effect: "Allow"
+  #              Action: "s3:ListBucket"
+  #              Resource: !GetAtt ETLBucket.Arn
+  #            - Effect: "Allow"
+  #              Action: "logs:*"
+  #              Resource: "arn:aws:logs:*:*:*"
   LoadSalesFunction:
     Type: AWS::Lambda::Function
     Properties:
