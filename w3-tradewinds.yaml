@@ -13,7 +13,8 @@ Parameters:
     Type: String
 
 Resources:
-  ETLBucket:
+  #ETLBucket:
+  ParquetBucket:
     Type: AWS::S3::Bucket
     Properties:
       BucketName: !Sub "${AWS::StackName}-${AWS::Region}"
@@ -23,7 +24,7 @@ Resources:
       CompatibleRuntimes:
         - python3.10
       Content:
-        S3Bucket: black-metal-666
+        S3Bucket: !Ref FunctionBucket 
         S3Key: lambda_layer.zip
   LoadSalesRole:
     Type: AWS::IAM::Role
