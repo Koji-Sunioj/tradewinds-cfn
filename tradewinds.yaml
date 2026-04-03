@@ -77,7 +77,7 @@ Resources:
         "--db-analyst": !Ref DBAnalyst
         "--etl-bucket": !Ref ETLBucket
       ExecutionClass: FLEX 
-      GlueVersion: 4 
+      GlueVersion: "4.0"
       MaxRetries: 0 
       NumberOfWorkers: 1
       Role: !GetAtt ETLRole.Arn
