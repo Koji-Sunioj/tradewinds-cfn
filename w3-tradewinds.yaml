@@ -14,10 +14,10 @@ Parameters:
 
 Resources:
   #ETLBucket:
-  ParquetBucket:
-    Type: AWS::S3::Bucket
-    Properties:
-      BucketName: !Sub "${AWS::StackName}-${AWS::Region}"
+  #ParquetBucket:
+  #  Type: AWS::S3::Bucket
+  #  Properties:
+  #    BucketName: !Sub "${AWS::StackName}-${AWS::Region}"
   LambdaLayer:
     Type: AWS::Lambda::LayerVersion
     Properties:
