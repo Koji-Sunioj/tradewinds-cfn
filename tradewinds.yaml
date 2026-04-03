@@ -72,7 +72,6 @@ Resources:
     Type: AWS::Glue::Job
     Properties:
       Command: 
-        PythonVersion: 3.10
         ScriptLocation: !Sub "s3://${FunctionBucket}/etl.py"
       DefaultArguments: 
         "--db-analyst": !Ref DBAnalyst
@@ -82,7 +81,7 @@ Resources:
       MaxRetries: 0 
       NumberOfWorkers: 1
       Role: !GetAtt ETLRole.Arn
-      Timeout: Integer
+      #Timeout: Integer
       WorkerType: Standard 
   LoadSalesFunction:
     Type: AWS::Lambda::Function
