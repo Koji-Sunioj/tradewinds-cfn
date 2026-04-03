@@ -105,11 +105,6 @@ Resources:
     Properties:
       LogGroupName: !Sub "/aws/lambda/${LoadSalesFunction}"
       RetentionInDays: 5
-  ETLLog:
-    Type: AWS::Logs::LogGroup
-    Properties:
-      LogGroupName: !Sub "/aws/lambda/${ETLJob}"
-      RetentionInDays: 5
   LoadSalesRule:
     Type: AWS::Events::Rule
     Properties:
