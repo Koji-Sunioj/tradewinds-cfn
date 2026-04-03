@@ -27,7 +27,7 @@ jobs:
 
           VERSION_ID=$(echo $VERSIONS | jq -r '.[] | select(.IsLatest == true).VersionId')
 
-          aws cloudformation deploy --stack-name $TRADEWINDS_STACK --template-file w3-tradewinds.yaml \
+          aws cloudformation deploy --stack-name $TRADEWINDS_STACK --template-file tradewinds.yaml \
             --capabilities CAPABILITY_IAM --region eu-north-1 \
             --parameter-overrides \
             FunctionVersion=$VERSION_ID \
