@@ -71,7 +71,8 @@ Resources:
   ETLJob:
     Type: AWS::Glue::Job
     Properties:
-      Command: 
+      Command:
+        Name: "create-json" 
         ScriptLocation: !Sub "s3://${FunctionBucket}/etl.py"
       DefaultArguments: 
         "--db-analyst": !Ref DBAnalyst
