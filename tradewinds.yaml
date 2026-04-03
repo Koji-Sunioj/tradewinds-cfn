@@ -72,7 +72,7 @@ Resources:
     Type: AWS::Glue::Job
     Properties:
       Command:
-        Name: "create-json" 
+        Name: glueetl
         ScriptLocation: !Sub "s3://${FunctionBucket}/etl.py"
       DefaultArguments: 
         "--db-analyst": !Ref DBAnalyst
