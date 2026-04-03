@@ -61,7 +61,7 @@ Resources:
                 Resource: !GetAtt ETLBucket.Arn
               - Effect: "Allow"
                 Action: "s3:PutObject"
-                Resource: !Sub "arn:aws:s3:::{AWS:::StackName}-${AWS::Region}/*" # "${AWS::StackName}-${AWS::Region}"
+                Resource: !Sub "arn:aws:s3:::${AWS:::StackName}-${AWS::Region}/*" # "${AWS::StackName}-${AWS::Region}"
               - Effect: "Allow"
                 Action: "s3:ListBucket"
                 Resource: !GetAtt ETLBucket.Arn
