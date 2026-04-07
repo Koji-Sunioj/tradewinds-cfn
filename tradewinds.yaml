@@ -168,7 +168,7 @@ Resources:
       Actions: 
         - JobName: !Ref ETLJob 
           Timeout: 10
-      Schedule: cron(0 18 * * SUN *)
+      Schedule: cron(0 18 ? * SUN *)
       StartOnCreation: true 
       Type: "SCHEDULED"
   #ETLJobRule:
