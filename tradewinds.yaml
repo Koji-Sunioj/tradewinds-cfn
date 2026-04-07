@@ -166,12 +166,11 @@ Resources:
     Type: AWS::Glue::Trigger
     Properties:
       Actions: 
-        - JobName: String
+        - JobName: !Ref ETLJob 
           Timeout: 10
       Schedule: cron(0 18 * * SUN *)
       StartOnCreation: true 
       Type: "SCHEDULED"
-      WorkflowName: !Ref ETLJob 
   #ETLJobRule:
   #  Type: AWS::Events::Rule
   #  Properties:
