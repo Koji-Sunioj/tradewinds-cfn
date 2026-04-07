@@ -25,8 +25,7 @@ Resources:
               - GET
             AllowedOrigins:
               - "*"
-            #ExposedHeaders:
-            # - "*" 
+            MaxAge: 3600
       PublicAccessBlockConfiguration:
         BlockPublicPolicy: false
   ETLBucketPolicy:
