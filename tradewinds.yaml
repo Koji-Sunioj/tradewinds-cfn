@@ -25,8 +25,8 @@ Resources:
               - GET
             AllowedOrigins:
               - "*"
-            ExposedHeaders:
-              - "*" 
+            #ExposedHeaders:
+            # - "*" 
       PublicAccessBlockConfiguration:
         BlockPublicPolicy: false
   ETLBucketPolicy:
