@@ -21,12 +21,14 @@ Resources:
     Type: AWS::S3::BucketPolicy
     Properties:
       Bucket: !Ref ETLBucket
+      PublicAccessBlockConfiguration:
+        BlockPublicPolicy: false
       PolicyDocument: 
         Version: "2012-10-17"
         Statement: 
           - Action:
-              - s3:GetObject
-            Effect: Allow
+              - "s3:GetObject"
+            Effect: "Allow"
             Principal: '*'
             Resource: !Sub "arn:aws:s3:::${AWS::StackName}-${AWS::Region}/app_data/*" 
   LambdaLayer:
@@ -46,7 +48,7 @@ Resources:
           - Effect: "Allow"
             Principal:
               Service:
-                - lambda.amazonaws.com
+                - "lambda.amazonaws.com"
             Action:
               - "sts:AssumeRole"
       ManagedPolicyArns:
@@ -60,7 +62,7 @@ Resources:
           - Effect: "Allow"
             Principal:
               Service:
-                - glue.amazonaws.com
+                - "glue.amazonaws.com"
             Action:
               - "sts:AssumeRole"
       Policies:
