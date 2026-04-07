@@ -17,20 +17,20 @@ Resources:
     Type: AWS::S3::Bucket
     Properties:
       BucketName: !Sub "${AWS::StackName}-${AWS::Region}"
-  ETLBucketPolicy:
-    Type: AWS::S3::BucketPolicy
-    Properties:
-      Bucket: !Ref ETLBucket
-      PublicAccessBlockConfiguration:
-        BlockPublicPolicy: false
-      PolicyDocument: 
-        Version: "2012-10-17"
-        Statement: 
-          - Action:
-              - "s3:GetObject"
-            Effect: "Allow"
-            Principal: '*'
-            Resource: !Sub "arn:aws:s3:::${AWS::StackName}-${AWS::Region}/app_data/*" 
+  #ETLBucketPolicy:
+  #  Type: AWS::S3::BucketPolicy
+  #  Properties:
+  #    Bucket: !Ref ETLBucket
+  #    PublicAccessBlockConfiguration:
+  #      BlockPublicPolicy: false
+  #    PolicyDocument: 
+  #      Version: "2012-10-17"
+  #      Statement: 
+  #        - Action:
+  #            - "s3:GetObject"
+  #          Effect: "Allow"
+  #          Principal: '*'
+  #          Resource: !Sub "arn:aws:s3:::${AWS::StackName}-${AWS::Region}/app_data/*" 
   LambdaLayer:
     Type: AWS::Lambda::LayerVersion
     Properties:
