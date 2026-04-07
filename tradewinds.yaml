@@ -62,6 +62,21 @@ Resources:
               - "sts:AssumeRole"
       ManagedPolicyArns:
         - "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+  ETLScheduleRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Principal:
+              Service:
+                - "scheduler.amazonaws.cop"
+            Action:
+              - "sts:AssumeRole"
+      ManagedPolicyArns:
+        - "arn:aws:iam::aws:policy/service-role/AWSGlueServiceRole"
+        - "arn:aws:iam::aws:policy/CloudWatchLogsFullAccess"
   ETLRole:
     Type: AWS::IAM::Role
     Properties:
@@ -105,7 +120,6 @@ Resources:
       MaxRetries: 0 
       NumberOfWorkers: 2 
       Role: !GetAtt ETLRole.Arn
-      #Timeout: Integer
       WorkerType: G.1X
   LoadSalesFunction:
     Type: AWS::Lambda::Function
@@ -131,7 +145,6 @@ Resources:
   LoadSalesRule:
     Type: AWS::Events::Rule
     Properties:
-      Description: Description of the rule
       ScheduleExpression: cron(0 12 * * ? *)
       State: ENABLED
       Targets:
@@ -144,3 +157,12 @@ Resources:
       FunctionName: !GetAtt LoadSalesFunction.Arn
       Principal: events.amazonaws.com
       SourceArn: !GetAtt LoadSalesRule.Arn
+  ETLJobRule:
+    Type: AWS::Events::Rule
+    Properties:
+      RoleArn: !GetAtt ETLScheduleRole.Arn
+      ScheduleExpression: cron(0 18 * * SUN *)
+      State: ENABLED
+      Targets:
+        - Arn: !GetAtt ETLJob.Arn
+          Id: Target1
