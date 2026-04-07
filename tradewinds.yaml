@@ -106,26 +106,26 @@ Resources:
       NumberOfWorkers: 2 
       Role: !GetAtt ETLRole.Arn
       WorkerType: G.1X
-  ETLScheduleRole:
-    Type: AWS::IAM::Role
-    Properties:
-      AssumeRolePolicyDocument:
-        Version: "2012-10-17"
-        Statement:
-          - Effect: "Allow"
-            Principal:
-              Service:
-                - "scheduler.amazonaws.com"
-            Action:
-              - "sts:AssumeRole"
-      Policies:
-        - PolicyName: schedule-policy
-          PolicyDocument: 
-            Version: "2012-10-17"
-            Statement:
-              - Effect: "Allow"
-                Action: "glue:StartJobRun"
-                Resource: "*" #!GetAtt ETLJob.Arn
+  #ETLScheduleRole:
+  #  Type: AWS::IAM::Role
+  #  Properties:
+  #    AssumeRolePolicyDocument:
+  #      Version: "2012-10-17"
+  #      Statement:
+  #        - Effect: "Allow"
+  #          Principal:
+  #            Service:
+  #              - "scheduler.amazonaws.com"
+  #          Action:
+  #            - "sts:AssumeRole"
+  #    Policies:
+  #      - PolicyName: schedule-policy
+  #        PolicyDocument: 
+  #          Version: "2012-10-17"
+  #          Statement:
+  #            - Effect: "Allow"
+  #              Action: "glue:StartJobRun"
+  #              Resource: "*" #!GetAtt ETLJob.Arn
   LoadSalesFunction:
     Type: AWS::Lambda::Function
     Properties:
@@ -162,12 +162,22 @@ Resources:
       FunctionName: !GetAtt LoadSalesFunction.Arn
       Principal: events.amazonaws.com
       SourceArn: !GetAtt LoadSalesRule.Arn
-  ETLJobRule:
-    Type: AWS::Events::Rule
+  ETLScheduleTrigger:
+    Type: AWS::Glue::Trigger
     Properties:
-      ScheduleExpression: cron(0 18 * * SUN *)
-      State: ENABLED
-      Targets:
-        - Arn: !GetAtt ETLJob.Arn
-          Id: Target1
-          RoleArn: !GetAtt ETLScheduleRole.Arn
+      Actions: 
+        - JobName: String
+          Timeout: 10
+      Schedule: cron(0 18 * * SUN *)
+      StartOnCreation: true 
+      Type: "SCHEDULED"
+      WorkflowName: !Ref ETLJob 
+  #ETLJobRule:
+  #  Type: AWS::Events::Rule
+  #  Properties:
+  #    ScheduleExpression: cron(0 18 * * SUN *)
+  #    State: ENABLED
+  #    Targets:
+  #      - Arn: !GetAtt ETLJob.Arn
+  #        Id: Target1
+  #        RoleArn: !GetAtt ETLScheduleRole.Arn
