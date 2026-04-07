@@ -125,7 +125,7 @@ Resources:
             Statement:
               - Effect: "Allow"
                 Action: "glue:StartJobRun"
-                Resource: !GetAtt ETLJob.Arn
+                Resource: "*" #!GetAtt ETLJob.Arn
   LoadSalesFunction:
     Type: AWS::Lambda::Function
     Properties:
