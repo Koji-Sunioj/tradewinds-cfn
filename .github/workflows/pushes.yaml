@@ -17,7 +17,7 @@ env:
   FUNCTION_BUCKET: ${{ secrets.FUNCTION_BUCKET }}
 
 jobs:
-  deploy-rest-api:
+  deploy-etl:
     runs-on: "ubuntu-latest"
     steps:
       - uses: actions/checkout@v6

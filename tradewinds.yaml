@@ -25,8 +25,8 @@ Resources:
         Version: "2012-10-17"
         Statement: 
           - Action:
-              - 's3:GetObject'
-            Effect: "Allow"
+              - s3:GetObject
+            Effect: Allow
             Principal: '*'
             Resource: !Sub "arn:aws:s3:::${AWS::StackName}-${AWS::Region}/app_data/*" 
   LambdaLayer:
