@@ -17,6 +17,8 @@ Resources:
     Type: AWS::S3::Bucket
     Properties:
       BucketName: !Sub "${AWS::StackName}-${AWS::Region}"
+      PublicAccessBlockConfiguration:
+        BlockPublicPolicy: false
   #ETLBucketPolicy:
   #  Type: AWS::S3::BucketPolicy
   #  Properties:
