@@ -51,7 +51,7 @@ Resources:
             Principal:
               Service: "cloudfront.amazonaws.com"
             Effect: Allow
-            Resource: !Sub "arn:aws:s3:::${AWS::StackName}-${AWS::Region}/front_end/*"
+            Resource: !Sub "arn:aws:s3:::${AWS::StackName}-${AWS::Region}/*"
   CloudFrontDistribution:
     Type: AWS::CloudFront::Distribution
     Properties:
@@ -62,7 +62,7 @@ Resources:
             OriginAccessControlId: !Ref CloudFrontOriginAccessControl
             S3OriginConfig:
               OriginAccessIdentity: ""
-        DefaultRootObject: front_end/index.html
+        DefaultRootObject: index.html
         Enabled: true
         DefaultCacheBehavior:
           TargetOriginId: WebAppBuckPointer
