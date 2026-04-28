@@ -51,7 +51,7 @@ Resources:
             Principal:
               Service: "cloudfront.amazonaws.com"
             Effect: Allow
-            Resource: !Sub "arn:aws:s3:::${AWS::StackName}-${AWS::Region}/*"
+            Resource: !Sub "arn:aws:s3:::${AWS::StackName}-${AWS::Region}/front_end*"
   CloudFrontDistribution:
     Type: AWS::CloudFront::Distribution
     Properties:
@@ -60,6 +60,7 @@ Resources:
           - DomainName: !GetAtt ETLBucket.RegionalDomainName
             Id: WebAppBuckPointer
             OriginAccessControlId: !Ref CloudFrontOriginAccessControl
+            OriginPath: front_end
             S3OriginConfig:
               OriginAccessIdentity: ""
         DefaultRootObject: index.html
