@@ -17,7 +17,7 @@ Resources:
     Type: AWS::CloudFront::OriginAccessControl
     Properties:
       OriginAccessControlConfig:
-        Name: CloudFront-Access
+        Name: ETLBucketAccess
         OriginAccessControlOriginType: s3
         SigningBehavior: always
         SigningProtocol: sigv4
