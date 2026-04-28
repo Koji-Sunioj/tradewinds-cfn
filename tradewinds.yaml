@@ -60,7 +60,7 @@ Resources:
           - DomainName: !GetAtt ETLBucket.RegionalDomainName
             Id: WebAppBuckPointer
             OriginAccessControlId: !Ref CloudFrontOriginAccessControl
-            OriginPath: front_end
+            OriginPath: "front_end"
             S3OriginConfig:
               OriginAccessIdentity: ""
         DefaultRootObject: index.html
