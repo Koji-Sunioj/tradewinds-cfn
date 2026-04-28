@@ -13,6 +13,14 @@ Parameters:
     Type: String
 
 Resources:
+  CloudFrontOriginAccessControl:
+    Type: AWS::CloudFront::OriginAccessControl
+    Properties:
+      OriginAccessControlConfig:
+        Name: CloudFront-Access
+        OriginAccessControlOriginType: s3
+        SigningBehavior: always
+        SigningProtocol: sigv4
   ETLBucket:
     Type: AWS::S3::Bucket
     Properties:
@@ -35,11 +43,31 @@ Resources:
       PolicyDocument: 
         Version: "2012-10-17"
         Statement: 
-          - Action:
-              - "s3:GetObject"
+          - Action: s3:GetObject
             Effect: "Allow"
             Principal: '*'
-            Resource: !Sub "arn:aws:s3:::${AWS::StackName}-${AWS::Region}/app_data/*" 
+            Resource: !Sub "arn:aws:s3:::${AWS::StackName}-${AWS::Region}/app_data/*"
+          - Action: s3:GetObject
+            Principal:
+              Service: "cloudfront.amazonaws.com"
+            Effect: Allow
+            Resource: !Sub "arn:aws:s3:::${AWS::StackName}-${AWS::Region}/front_end/*"
+  CloudFrontDistribution:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Origins:
+          - DomainName: !GetAtt ETLBucket.RegionalDomainName
+            Id: WebAppBuckPointer
+            OriginAccessControlId: !Ref CloudFrontOriginAccessControl
+            S3OriginConfig:
+              OriginAccessIdentity: ""
+        DefaultRootObject: front_end/index.html
+        Enabled: true
+        DefaultCacheBehavior:
+          TargetOriginId: WebAppBuckPointer
+          ViewerProtocolPolicy: allow-all
+          CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6
   LambdaLayer:
     Type: AWS::Lambda::LayerVersion
     Properties:
@@ -106,26 +134,6 @@ Resources:
       NumberOfWorkers: 2 
       Role: !GetAtt ETLRole.Arn
       WorkerType: G.1X
-  #ETLScheduleRole:
-  #  Type: AWS::IAM::Role
-  #  Properties:
-  #    AssumeRolePolicyDocument:
-  #      Version: "2012-10-17"
-  #      Statement:
-  #        - Effect: "Allow"
-  #          Principal:
-  #            Service:
-  #              - "scheduler.amazonaws.com"
-  #          Action:
-  #            - "sts:AssumeRole"
-  #    Policies:
-  #      - PolicyName: schedule-policy
-  #        PolicyDocument: 
-  #          Version: "2012-10-17"
-  #          Statement:
-  #            - Effect: "Allow"
-  #              Action: "glue:StartJobRun"
-  #              Resource: "*" #!GetAtt ETLJob.Arn
   LoadSalesFunction:
     Type: AWS::Lambda::Function
     Properties:
@@ -171,12 +179,3 @@ Resources:
       Schedule: cron(0 18 ? * SUN *)
       StartOnCreation: true 
       Type: "SCHEDULED"
-  #ETLJobRule:
-  #  Type: AWS::Events::Rule
-  #  Properties:
-  #    ScheduleExpression: cron(0 18 * * SUN *)
-  #    State: ENABLED
-  #    Targets:
-  #      - Arn: !GetAtt ETLJob.Arn
-  #        Id: Target1
-  #        RoleArn: !GetAtt ETLScheduleRole.Arn
