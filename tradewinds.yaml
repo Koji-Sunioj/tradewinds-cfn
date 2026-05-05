@@ -48,6 +48,11 @@ Resources:
               Service: "cloudfront.amazonaws.com"
             Effect: Allow
             Resource: !Sub "arn:aws:s3:::${AWS::StackName}-${AWS::Region}/front_end*"
+          - Action: s3:GetObject
+            Principal:
+              Service: "cloudfront.amazonaws.com"
+            Effect: Allow
+            Resource: !Sub "arn:aws:s3:::${AWS::StackName}-${AWS::Region}/app_data/sales.json"
   CloudFrontDistribution:
     Type: AWS::CloudFront::Distribution
     Properties:
