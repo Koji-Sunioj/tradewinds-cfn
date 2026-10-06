@@ -136,7 +136,7 @@ Resources:
         "--additional-python-modules": "databricks-sql-connector==4.6.0"
         "--extra-py-files": !Sub "s3://${FunctionBucket}/aggregates.py" 
       ExecutionClass: FLEX 
-      GlueVersion: "4.0"
+      GlueVersion: "5.0"
       MaxRetries: 0 
       NumberOfWorkers: 2 
       Role: !GetAtt ETLRole.Arn
