@@ -15,7 +15,8 @@ env:
   DB_ADMIN: ${{ secrets.DB_ADMIN }}
   DB_ANALYST: ${{ secrets.DB_ANALYST }}
   FUNCTION_BUCKET: ${{ secrets.FUNCTION_BUCKET }}
-
+  DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+  DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
 jobs:
   deploy-etl:
     runs-on: "ubuntu-latest"
@@ -33,4 +34,6 @@ jobs:
             FunctionVersion=$VERSION_ID \
             FunctionBucket=$FUNCTION_BUCKET \
             DBAdmin=$DB_ADMIN \
-            DBAnalyst=$DB_ANALYST 
+            DBAnalyst=$DB_ANALYST \
+            DataBricksHost=$DATABRICKS_HOST \
+            DataBricksToken=$DATABRICKS_TOKEN 

@@ -11,6 +11,12 @@ Parameters:
   FunctionBucket:
     Description: bucket name of where functions zip lives
     Type: String
+  DataBricksHost:
+    Description: data bricks host url
+    Type: String
+  DataBricksToken:
+    Description: data bricks token for changes
+    Type: String
 
 Resources:
   CloudFrontOriginAccessControl:
@@ -125,6 +131,10 @@ Resources:
       DefaultArguments: 
         "--db_analyst": !Ref DBAnalyst
         "--etl_bucket": !Ref ETLBucket
+        "--databricks_host": !Ref DataBricksHost
+        "--databricks_token": !Ref DataBricksToken
+        "--additional-python-modules": "databricks-sql-connector==4.6.0"
+        "--extra-py-files": !Sub "s3://${FunctionBucket}/aggregates.py" 
       ExecutionClass: FLEX 
       GlueVersion: "4.0"
       MaxRetries: 0 
