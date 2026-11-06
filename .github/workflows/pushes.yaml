@@ -24,7 +24,7 @@ jobs:
       - uses: actions/checkout@v6
       - run: |
           VERSIONS=$(aws s3api list-object-versions --bucket $FUNCTION_BUCKET --region eu-north-1 \
-            --prefix tradewind_functions.zip --query "Versions")
+            --prefix functions/tradewinds_functions.zip --query "Versions")
 
           VERSION_ID=$(echo $VERSIONS | jq -r '.[] | select(.IsLatest == true).VersionId')
 
