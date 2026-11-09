@@ -112,9 +112,7 @@ Resources:
             Statement:
               - Effect: "Allow"
                 Action: "s3:GetObject"
-                #Resource: !Sub "s3://${FunctionBucket}/functions/tradewinds_jobs/*" 
                 Resource: !Sub "arn:aws:s3:::ironpond-${AWS::Region}-artifacts/functions/tradewinds_jobs/*" 
-                #Resource: !GetAtt ETLBucket.Arn
               - Effect: "Allow"
                 Action: "s3:PutObject"
                 Resource: !Sub "arn:aws:s3:::${AWS::StackName}-${AWS::Region}/*" 
